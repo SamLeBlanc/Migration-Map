@@ -1,0 +1,109 @@
+.sidebar{
+  position:fixed;
+  left: 10px;
+  top: 10px;
+  z-index:5;
+  width: 350px;
+  color:black;
+}
+
+#settings{
+  font-size:24px;
+  line-height: 90%;
+  position: fixed;
+  z-index:3;
+  left: 10px;
+  top: 210px;
+}
+
+.heading{
+  font-family: 'Yantramanav', sans-serif;
+  width: 1800px;
+  top:10px;
+  margin: auto;
+  text-align: center;
+  position: fixed;
+  background: #bbb;
+  z-index: 4;
+}
+
+.title{
+  font-size:60px;
+  font-weight:700;
+  color: black;
+}
+
+#title-state{
+  color:hotpink;
+  -webkit-text-stroke: 1px black;
+}
+
+#wrapper{
+
+}
+
+.legend-label{
+  font-family: 'Helvetica', sans-serif;
+  font-size: 30px;
+  stroke: black;
+  stroke-width: 0.6;
+}
+
+#source{
+  font-size:24px;
+  line-height: 90%;
+  position: fixed;
+  width: 350px;
+  left: 10px;
+  top: 115px;
+}
+
+#info-2{
+  margin-top: -7px;
+  color:#bbb;
+  font-size:24px;
+  color:black;
+}
+
+#info-1{
+  margin-top: -10px;
+  font-size:24px;
+  color:black;
+}
+
+#info-2-stateB{
+ color: hotpink;
+ -webkit-text-stroke: 1px black;
+}
+
+body{
+  background: #bbb;
+  font-family: 'Yantramanav', sans-serif;
+  color: black;
+  font-weight: bold;
+}
+
+.link{
+  stroke-linecap: round;
+  fill: transparent;
+  pointer-events: visibleStroke;
+  opacity: 0.5;
+  /* pointer-events: none; */
+}
+
+.country{
+  stroke: black;
+  stroke-width: 0.5;
+}
+
+.cells path {
+  fill: none;
+  pointer-events: all;
+}
+.circle {
+  fill: "green";
+}
+
+.axis{
+  font-size: 13px;
+}
