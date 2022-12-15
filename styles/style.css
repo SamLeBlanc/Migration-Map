@@ -4,7 +4,7 @@
   position: fixed;
   z-index:3;
   left: 10px;
-  top: 210px;
+  top: 50px;
 }
 
 .heading{
@@ -27,6 +27,12 @@
   pointer-events: none;
   background: transparent;
   z-index: 4;
+}
+
+.icon-i{
+   height: 16px;
+   width: 16px;
+   vertical-align: middle;
 }
 
 .title{
@@ -124,4 +130,29 @@ body{
 
 .axis{
   font-size: 13px;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+  all: initial;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
 }

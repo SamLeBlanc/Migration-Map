@@ -40,8 +40,11 @@
 
 <body>
 
+<div class="tooltip">Hover over me
+  <span class="tooltiptext">Tooltip text</span>
+</div>
+
 <div id='settings'>
-  <div style="font-family: 'Yantramanav', sans-serif;">Settings (Hotkeys):</div>
   <div style="padding:1px 3px;">
     <label for="direction-select" style="font-size:16px;">Direction:</label>
     <select name="direction-select" id="direction-select" onchange="if (lonks) lonks.remove();" style="width:137px;">
@@ -54,7 +57,10 @@
     <label for="Links" style="font-size:16px;">Links (L):</label>
     <input type="checkbox" id="links-checkbox" name="Links" value="Links" onclick="draw()">
     <input id="links-number" type="number" value="5" style="width:40px">
-    <img src="assets/i-icon.png" style="height: 16px; width: 16px; vertical-align: middle;" onclick="link_alert()">
+    <div class="tooltip">
+      <img src="assets/i-icon.png" class="icon-i">
+      <span class="tooltiptext">Tooltip text</span>
+    </div>
   </div>
   <br>
   <div style="padding:1px 3px;">
@@ -67,12 +73,63 @@
   </div>
   <br>
   <div style="padding:1px 3px;">
-    <button type="button" onclick="preset(0)">Reset Map</button><br>
+    <button type="button" onclick="preset(0)">Reset Map</button>
+    <div class="tooltip">
+      <img src="assets/i-icon.png" class="icon-i">
+      <span class="tooltiptext">Tooltip text</span>
+    </div>
+
+    <br><br>
+
     <button type="button" onclick="preset(1)">California Net Movers</button>
+    <div class="tooltip">
+      <img src="assets/i-icon.png" class="icon-i">
+      <span class="tooltiptext">Tooltip text</span>
+    </div>
+
+    <br>
+
+    <button type="button" onclick="preset(4)">Delaware Net Movers</button>
+    <div class="tooltip">
+      <img src="assets/i-icon.png" class="icon-i">
+      <span class="tooltiptext">Tooltip text</span>
+    </div>
+
+    <br>
+
+    <button type="button" onclick="preset(5)">New York Net Movers</button>
+    <div class="tooltip">
+      <img src="assets/i-icon.png" class="icon-i">
+      <span class="tooltiptext">Tooltip text</span>
+    </div>
+
+    <br>
+    <button type="button" onclick="preset(6)">Puerto Rico Net Movers</button>
+    <div class="tooltip">
+      <img src="assets/i-icon.png" class="icon-i">
+      <span class="tooltiptext">Tooltip text</span>
+    </div>
+
+    <br><br>
+
+    <button type="button" onclick="preset(2)">North Dakota In-movers</button>
+    <div class="tooltip">
+      <img src="assets/i-icon.png" class="icon-i">
+      <span class="tooltiptext">Tooltip text</span>
+    </div>
+
+    <br>
+
+    <button type="button" onclick="preset(3)">North Dakota Out-movers</button>
+    <div class="tooltip">
+      <img src="assets/i-icon.png" class="icon-i">
+      <span class="tooltiptext">Tooltip text</span>
+    </div>
+
+    <br>
   </div>
-
-
 </div>
+
 
 <div id="site-title">
   <span style="font-size: 50px; color:black; text-decoration-line: underline; text-decoration-thickness: 3px;">State-to-State Migration Flows</span><br>

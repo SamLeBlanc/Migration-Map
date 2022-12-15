@@ -18,14 +18,20 @@ const scaleNum = val => {
 const updateTitle = (i=null) => {
   if (i == null || tiles.hover.current == "Ocean"){
     let titleDirection = $('#direction-select').find(":selected").text()
-    $('.title').html(`<span id="title-state" style="color: ${$('#color-3').val()}">National</span> <span id="title-direction">${titleDirection.slice(0,-4)}&nbsp</span><img src="assets/i-icon.png" class="info-button" onclick="alert()">`)
+    $('.title').html(`<span id="title-state" style="color: ${$('#color-3').val()}">National</span> <span id="title-direction">${titleDirection.slice(0,-4)}&nbsp</span><div class="tooltip">
+      <img src="assets/i-icon.png" class="icon-i">
+      <span class="tooltiptext">Tooltip text</span>
+    </div>`)
   } else {
     let stateA = tiles.held.current ? tiles.held.current : i.properties.NAME;
     let direction = getDirection()
     if (direction == 'in-mover') titleDirection = 'In-movers to'
     if (direction == 'out-mover') titleDirection = 'Out-movers from'
     if (direction == 'net') titleDirection    = 'Net Movers to/from'
-    $('.title').html(`<span id="title-direction">${titleDirection}</span> <span id="title-state" style="color: ${$('#color-3').val()}">${stateA}&nbsp</span><img src="assets/i-icon.png" class="info-button" onclick="alert()">`)
+    $('.title').html(`<span id="title-direction">${titleDirection}</span> <span id="title-state" style="color: ${$('#color-3').val()}">${stateA}&nbsp</span><div class="tooltip">
+      <img src="assets/i-icon.png" class="icon-i">
+      <span class="tooltiptext">Tooltip text</span>
+    </div>`)
   }
 }
 
