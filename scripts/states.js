@@ -18,19 +18,19 @@ const scaleNum = val => {
 const updateTitle = (i=null) => {
   if (i == null || tiles.hover.current == "Ocean"){
     let titleDirection = $('#direction-select').find(":selected").text()
-    $('.title').html(`<span id="title-state">National</span> <span id="title-direction">${titleDirection.slice(0,-4)}</span>`)
+    $('.title').html(`<span id="title-state" style="color: ${$('#color-3').val()}">National</span> <span id="title-direction">${titleDirection.slice(0,-4)}&nbsp</span><img src="assets/i-icon.png" class="info-button" onclick="alert()">`)
   } else {
     let stateA = tiles.held.current ? tiles.held.current : i.properties.NAME;
     let direction = getDirection()
     if (direction == 'in-mover') titleDirection = 'In-movers to'
     if (direction == 'out-mover') titleDirection = 'Out-movers from'
     if (direction == 'net') titleDirection    = 'Net Movers to/from'
-    $('.title').html(`<span id="title-direction">${titleDirection}</span> <span id="title-state">${stateA}</span>`)
+    $('.title').html(`<span id="title-direction">${titleDirection}</span> <span id="title-state" style="color: ${$('#color-3').val()}">${stateA}&nbsp</span><img src="assets/i-icon.png" class="info-button" onclick="alert()">`)
   }
 }
 
 const updateSubtitle1 = i => {
-  let string = ""
+  let string = "Hover over a state to learn more..."
   if (tiles.hover.current != "Ocean"){
     let stateA = tiles.held.current ? tiles.held.current : i.properties.NAME;
     let countrySum = getSingleStateSum(stateA, getDirection())
@@ -86,10 +86,10 @@ const colorImportExport = x => {
 
   n = 9
 
-  const breaks = [0,100,500,1000,5000,10000,50000,100000,500000,1000000];
+  const breaks = [0,100,500,1000,5000,10000,50000,100000,500000];
 
-  out_colors = [...Array(n).keys()].map(d => d3.interpolateRgb("white", "darkred")((d/(n-1)) ))
-  in_colors = [...Array(n).keys()].map(d => d3.interpolateRgb("white", "darkgreen")((d/(n-1)) ))
+  out_colors = [...Array(n).keys()].map(d => d3.interpolateRgb("lightgrey", $('#color-1').val() )((  Math.min(1,d/(n-1))  ) ))
+  in_colors = [...Array(n).keys()].map(d => d3.interpolateRgb("lightgrey", $('#color-2').val() )((  Math.min(1,d/(n-1))  ) ))
 
   // out_colors = [...Array(n).keys()].map(d => d3[`interpolate${$('#out-color-select').val()}`] (d/(n-1)))
   // in_colors = [...Array(n).keys()].map(d => d3[`interpolate${$('#in-color-select').val()}`] (d/(n-1)))
@@ -110,8 +110,8 @@ const colorImportExport = x => {
 const colorNetExports = x => {
   if (x == 0) return "#ddd"
   n = 9
-  const out_colors = [...Array(n).keys()].reverse().map(d => d3.interpolateRgb("white", "darkred")(d/(n-1)))
-  const in_colors = [...Array(n).keys()].map(d => d3.interpolateRgb("white", "darkgreen")(d/(n-1)))
+  const out_colors = [...Array(n).keys()].reverse().map(d => d3.interpolateRgb("lightgrey", $('#color-1').val() )(d/(n-1)))
+  const in_colors = [...Array(n).keys()].map(d => d3.interpolateRgb("lightgrey", $('#color-2').val() )(d/(n-1)))
   const breaks = [-1000000,-500000,-100000,-50000,-10000,-5000,-1000,-500,-100,0,100,500,1000,5000,10000,50000,100000,500000,1000000];
   const colors = out_colors.concat(['#fff'], in_colors)
   let count = 0;
@@ -125,7 +125,7 @@ const colorNetExports = x => {
 }
 
 const getStateFill = d => {
-  if (tiles.held.current == d.properties.NAME) return "hotpink"
+  if (tiles.held.current == d.properties.NAME) return $('#color-3').val()
   if (tiles.hover.current == "Ocean" && !tiles.held.current) return fillNationalSum(d)
   else return fillStateSingle(d)
 }
@@ -152,13 +152,23 @@ const redrawSingleState = stateName => {
     .attr("class","country-highlighted")
     .attr("id", (d, i) => d.properties.NAME)
     .attr("d", (d, i) => path(d))
-    .attr("stroke", "hotpink")
+    .attr("stroke", $('#color-3').val())
     .attr("stroke-width", "2")
     .attr("fill", (d, i) => getStateFill(d))
     .on("click", (d,i) => onHeldClick(d,i))
 }
 
 const drawAllStates = () => {
+  land.append("g")
+    .selectAll("path")
+    .data(data['countries'].features.sort((a,b) => d3.ascending(a.properties.size, b.properties.size)))
+    .join("path")
+    .attr("d", (d, i) => path(d))
+    .attr("fill", "transparent")
+    .attr("stroke", "black")
+    .attr("stroke-width","5")
+    .attr("stroke-linecap","round")
+
   land.append("g")
     .selectAll("path")
     .data(data['countries'].features.sort((a,b) => d3.ascending(a.properties.size, b.properties.size)))
@@ -183,7 +193,7 @@ const drawAllStates = () => {
       } else {
         $('#info-2').empty();
         d3.select(this)
-          .style('fill', 'hotpink');
+          .style('fill', $('#color-3').val());
       }
     })
     .on("click", function(d,i) {

@@ -36,6 +36,7 @@ function drawBee(state, direction) {
 
     svg2.select(".cells").remove()
     svg2.select(".axis").remove()
+    svg2.select(".axis-label").remove()
 
     scaleSelect = $('#log').is(':checked') ? d3.scaleLog() : d3.scaleLinear();
     bounds = $('#log').is(':checked') ? [500,10000] : [0,2000];
@@ -61,7 +62,7 @@ function drawBee(state, direction) {
     var simulation = d3.forceSimulation(D)
         .force("x", d3.forceX(d => axisScale(d.change)).strength(1))
         .force("y", d3.forceY(beeHeight / 2))
-        .force("collide", d3.forceCollide((d, i) => sizeScale(d.size) + 1))
+        .force("collide", d3.forceCollide((d, i) => sizeScale(d.size) + 2))
         .stop();
 
     for (var i = 0; i < 250; ++i) simulation.tick();
@@ -71,6 +72,19 @@ function drawBee(state, direction) {
         .attr("transform", "translate(0," + (beeHeight) + ")")
         .call(d3.axisBottom(axisScale).ticks(12))
         ;
+
+    let ax_title = ''
+    if(getDirection() == 'in-mover') ax_title = 'In-movers Count'
+    if(getDirection() == 'out-mover') ax_title = 'Out-movers Count'
+    if(getDirection() == 'net') ax_title = 'Net-movers Count'
+
+
+    svg2.append("text")
+      .attr("class", "axis-label")
+      .attr("text-anchor", "middle")
+      .attr("x", width/2)
+      .attr("y", beeHeight + 50)
+      .text(ax_title);
 
     // JOIN
     var cell = svg2.append("g")
@@ -113,19 +127,19 @@ function drawBee(state, direction) {
   }
 
   const getBubbleStroke = d => {
-    if (tiles.held.current != "" && tiles.hover.current == d.data.name) return "hotpink"
+    if (tiles.held.current != "" && tiles.hover.current == d.data.name) return $('#color-3').val()
     else return "black"
   }
 
   const getBubbleStrokeWidth = d => {
     if (tiles.held.current != "" && tiles.hover.current == d.data.name) return "5"
-    else return "0.5"
+    else return "2"
   }
 
   const getBubbleFill = d => {
     if (tiles.held.current != "" && tiles.hover.current == d.data.name) return fillBubbleSingle(d)
-    if (tiles.held.current == d.data.name) return "hotpink"
-    if (tiles.hover.current == d.data.name) return "hotpink"
+    if (tiles.held.current == d.data.name) return $('#color-3').val()
+    if (tiles.hover.current == d.data.name) return $('#color-3').val()
     if (tiles.hover.current == "Ocean" && !tiles.held.current) return fillNationalBubbleSum(d)
     else return fillBubbleSingle(d)
   }
@@ -134,6 +148,11 @@ function drawBee(state, direction) {
     let stateA = tiles.held.current ? tiles.held.current : tiles.hover.current
     let stateB = d.data.name
     let interStateSum = getInterStateSum(stateA, stateB, getDirection())
+    if ($('#count-select').val() == 'percent-a') {
+      interStateSum = 100*interStateSum / getInterStateData(stateA, stateB, getDirection()).map(e => +e.A_pop)
+    } else if ($('#count-select').val() == 'percent-b') {
+      interStateSum = 100*interStateSum / getInterStateData(stateA, stateB, getDirection()).map(e => +e.B_pop)
+    }
     return getColor(interStateSum)
   }
 

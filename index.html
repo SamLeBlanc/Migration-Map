@@ -18,6 +18,8 @@
 <script src="scripts/water.js"></script>
 <script src="scripts/legend.js"></script>
 <script src="scripts/projection.js"></script>
+<script src="scripts/alerts.js"></script>
+
 
 
 <!-- Styles -->
@@ -38,10 +40,6 @@
 
 <body>
 
-<div class="sidebar">
-  <div style="font-family: 'Yantramanav', sans-serif; font-size: 2em; color:hotpink; -webkit-text-stroke: 1px black; ">State-to-State<br>Migration Flows</div>
-</div>
-
 <div id='settings'>
   <div style="font-family: 'Yantramanav', sans-serif;">Settings (Hotkeys):</div>
   <div style="padding:1px 3px;">
@@ -56,109 +54,46 @@
     <label for="Links" style="font-size:16px;">Links (L):</label>
     <input type="checkbox" id="links-checkbox" name="Links" value="Links" onclick="draw()">
     <input id="links-number" type="number" value="5" style="width:40px">
+    <img src="assets/i-icon.png" style="height: 16px; width: 16px; vertical-align: middle;" onclick="link_alert()">
   </div>
-  <!-- <div style="padding:1px 3px;">
-    <label for="nation-lock" style="font-size:16px;">Nation Lock (K):</label>
-    <input type="checkbox" id="nation-lock" name="nation-lock" value="nation-lock" onclick="draw()">
-  </div>
+  <br>
   <div style="padding:1px 3px;">
-    <label for="in-color-select" style="font-size:16px;">In-Mover Color:</label>
-    <select name="in-color-select" id="in-color-select" onchange="draw()" style="width:137px;">
-      <option value="BrBG">BrBG</option>
-      <option value="PRGn">PRGn</option>
-      <option value="PiYG">PiYG</option>
-      <option value="PuOr">PuOr</option>
-      <option value="RdBu">RdBu</option>
-      <option value="RdGy">RdGy</option>
-      <option value="RdYlBu">RdYlBu</option>
-      <option value="RdYlGn">RdYlGn</option>
-      <option value="Spectral">Spectral</option>
-      <option value="Blues">Blues</option>
-      <option selected value="Greens">Greens</option>
-      <option value="Greys">Greys</option>
-      <option value="Oranges">Oranges</option>
-      <option value="Purples">Purples</option>
-      <option value="Reds">Reds</option>
-      <option value="Viridis">Viridis</option>
-      <option value="Inferno">Inferno</option>
-      <option value="Magma">Magma</option>
-      <option value="Plasma">Plasma</option>
-      <option value="Warm">Warm</option>
-      <option value="Cool">Cool</option>
-      <option value="CubehelixDefault">CubehelixDefault</option>
-      <option value="BuGn">BuGn</option>
-      <option value="BuPu">BuPu</option>
-      <option value="GnBu">GnBu</option>
-      <option value="OrRd">OrRd</option>
-      <option value="PuBuGn">PuBuGn</option>
-      <option value="PuBu">PuBu</option>
-      <option value="PuRd">PuRd</option>
-      <option value="RdPu">RdPu</option>
-      <option value="YlGnBu">YlGnBu</option>
-      <option value="YlGn">YlGn</option>
-      <option value="YlOrBr">YlOrBr</option>
-      <option value="YlOrRd">YlOrRd</option>
-      <option value="Rainbow">Rainbow</option>
-    </select>
+    <label for="color-2" style="font-size:16px;">Out-mover Color:</label>
+    <input type="color" class="color-select" id="color-2" name="color-2" value="#005700" onchange="draw()"><br>
+    <label for="color-1" style="font-size:16px;">In-mover Color:</label>
+    <input type="color" class="color-select" id="color-1" name="color-1" value="#8B0000" onchange="draw()"><br>
+    <label for="color-3" style="font-size:16px;">Highlight Color:</label>
+    <input type="color" class="color-select" id="color-3" name="color-3" value="#FF69B4" onchange="draw()"><br>
   </div>
+  <br>
   <div style="padding:1px 3px;">
-    <label for="out-color-select" style="font-size:16px;">Out-Mover Color:</label>
-    <select name="out-color-select" id="out-color-select" onchange="draw()" style="width:137px;">
-      <option value="BrBG">BrBG</option>
-      <option value="PRGn">PRGn</option>
-      <option value="PiYG">PiYG</option>
-      <option value="PuOr">PuOr</option>
-      <option value="RdBu">RdBu</option>
-      <option value="RdGy">RdGy</option>
-      <option value="RdYlBu">RdYlBu</option>
-      <option value="RdYlGn">RdYlGn</option>
-      <option value="Spectral">Spectral</option>
-      <option value="Blues">Blues</option>
-      <option value="Greens">Greens</option>
-      <option value="Greys">Greys</option>
-      <option value="Oranges">Oranges</option>
-      <option value="Purples">Purples</option>
-      <option selected value="Reds">Reds</option>
-      <option value="Viridis">Viridis</option>
-      <option value="Inferno">Inferno</option>
-      <option value="Magma">Magma</option>
-      <option value="Plasma">Plasma</option>
-      <option value="Warm">Warm</option>
-      <option value="Cool">Cool</option>
-      <option value="CubehelixDefault">CubehelixDefault</option>
-      <option value="BuGn">BuGn</option>
-      <option value="BuPu">BuPu</option>
-      <option value="GnBu">GnBu</option>
-      <option value="OrRd">OrRd</option>
-      <option value="PuBuGn">PuBuGn</option>
-      <option value="PuBu">PuBu</option>
-      <option value="PuRd">PuRd</option>
-      <option value="RdPu">RdPu</option>
-      <option value="YlGnBu">YlGnBu</option>
-      <option value="YlGn">YlGn</option>
-      <option value="YlOrBr">YlOrBr</option>
-      <option value="YlOrRd">YlOrRd</option>
-      <option value="Rainbow">Rainbow</option>
-    </select>
-  </div> -->
+    <button type="button" onclick="preset(0)">Reset Map</button><br>
+    <button type="button" onclick="preset(1)">California Net Movers</button>
+  </div>
+
+
 </div>
 
-<div id='source'>Source:
-  <a href="https://www.census.gov/data/tables/time-series/demo/geographic-mobility/state-to-state-migration.html">American Community Survey, U.S. Census Bureau (2019)</a>
+<div id="site-title">
+  <span style="font-size: 50px; color:black; text-decoration-line: underline; text-decoration-thickness: 3px;">State-to-State Migration Flows</span><br>
+  <span>Source:
+    <a href="https://www.census.gov/data/tables/time-series/demo/geographic-mobility/state-to-state-migration.html">American Community Survey, U.S. Census Bureau (2019)</a>
+  </span>
 </div>
 
 <div class="heading">
   <div class="title">
-    <span id="title-state">National</span>
-    <span id="title-direction">In-movers</span>
+      <span id="title-state">National</span>
+      <span id="title-direction">In-movers</span>
+      <img src="assets/i-icon.png" class="info-button" onclick="alert()">
   </div>
   <div class="info">
-    <div id="info-1"></div>
+    <div id="info-1">Hover over a state to learn more...</div>
     <div id="info-2"></div>
   </div>
 </div>
 
-<div id="wrapper" style="position: fixed; top: 125px;">
+<div id="wrapper" style="position: fixed; top: 60px;">
   <!-- SVG lives here -->
 </div>
 
@@ -167,19 +102,29 @@
 // Calculate SVG dimensions
 const width = window.innerWidth-20
 const height = 550
+const bubble_height = Math.max(350, window.innerHeight*0.33)+25
+const map_height = window.innerHeight - 124 - bubble_height
+
+$(".title").css("margin-top", window.innerHeight - 60 - bubble_height)
 
 // Define the SVG inside of the wrapper
 const svg = d3.select("#wrapper")
 .append("svg")
 .attr("width", width)
-.attr("height", height)
+.attr("height", map_height)
 .call(zoom);
 
 const svg2 = d3.select("#wrapper")
 .append("svg")
+.attr("id","svg2")
 .attr("width", width)
-.attr("height", "500")
+.attr("height", bubble_height)
 .call(zoom);
+
+$(".title").css("margin-top", window.innerHeight - 75 - bubble_height)
+$("#svg2").css("margin-top", $(".title").css("height"))
+
+
 
 // Create two high-level groups, for the water and land components, respectively
 const ocean = svg.append("g");
@@ -187,8 +132,8 @@ const land = svg.append("g");
 
 // Define the map projection and scale, then translate to proper position
 const projection = geoAlbersUsaPr()
-.scale(2.1*height)
-.translate([width/2, height/2]);
+.scale(2.1*map_height)
+.translate([width/2, map_height/2]);
 
 // Define path generator based on map projection
 const path = d3.geoPath().projection(projection)

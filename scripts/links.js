@@ -120,7 +120,7 @@ const updateSubtitle2 = i => {
   // Combine the above gathered info into a single string and set as subtitle
   value = (parseInt(value) > 0 && parseInt(value) < 100) ? '<100' : value.toLocaleString("en-US")
   $('#info-2').html(`Of those, ${value}${percent_str} ${action} <span class='info-2-stateB'>${stateB}</span>.`)
-  $('.info-2-stateB').css({'color': 'hotpink', '-webkit-text-stroke': '0.5px black'})
+  $('.info-2-stateB').css({'color': $('#color-3').val(), '-webkit-text-stroke': '0.5px black'})
 }
 
 // Determine the path of the link between stateA and stateB
