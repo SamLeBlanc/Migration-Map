@@ -40,12 +40,10 @@
 
 <body>
 
-<div class="tooltip">Hover over me
-  <span class="tooltiptext">Tooltip text</span>
-</div>
-
 <div id='settings'>
   <div style="padding:1px 3px;">
+    <span>Settings:</span>
+    <div style="padding:3px"></div>
     <label for="direction-select" style="font-size:16px;">Direction:</label>
     <select name="direction-select" id="direction-select" onchange="if (lonks) lonks.remove();" style="width:137px;">
       <option value="in-mover">In-movers (I)</option>
@@ -73,11 +71,14 @@
   </div>
   <br>
   <div style="padding:1px 3px;">
-    <button type="button" onclick="preset(0)">Reset Map</button>
+    <span>Pre-sets:</span>
     <div class="tooltip">
       <img src="assets/i-icon.png" class="icon-i">
       <span class="tooltiptext">Tooltip text</span>
     </div>
+    <div style="padding:3px"></div>
+    <button type="button" onclick="preset(0)">Reset Map</button>
+
 
     <br><br>
 

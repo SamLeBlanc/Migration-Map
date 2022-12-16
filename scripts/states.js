@@ -16,14 +16,15 @@ const scaleNum = val => {
 }
 
 const updateTitle = (i=null) => {
-  if (i == null || tiles.hover.current == "Ocean"){
+  if (tiles.hover.current == "Ocean" && !tiles.held.current){
     let titleDirection = $('#direction-select').find(":selected").text()
     $('.title').html(`<span id="title-state" style="color: ${$('#color-3').val()}">National</span> <span id="title-direction">${titleDirection.slice(0,-4)}&nbsp</span><div class="tooltip">
       <img src="assets/i-icon.png" class="icon-i">
       <span class="tooltiptext">Tooltip text</span>
     </div>`)
   } else {
-    let stateA = tiles.held.current ? tiles.held.current : i.properties.NAME;
+    name = i == null ? tiles.held.current :  i.properties.NAME
+    let stateA = tiles.held.current ? tiles.held.current : name;
     let direction = getDirection()
     if (direction == 'in-mover') titleDirection = 'In-movers to'
     if (direction == 'out-mover') titleDirection = 'Out-movers from'
@@ -36,8 +37,11 @@ const updateTitle = (i=null) => {
 }
 
 const updateSubtitle1 = i => {
+  $('#info-1').css('color','grey')
   let string = "Hover over a state to learn more..."
-  if (tiles.hover.current != "Ocean"){
+  document.getElementById("info-1").textContent = string
+
+  if (tiles.hover.current != "Ocean" || tiles.held.current != ''){
     let stateA = tiles.held.current ? tiles.held.current : i.properties.NAME;
     let countrySum = getSingleStateSum(stateA, getDirection())
     let direc = getDirection() == 'net' ? 'net in-movers' : getDirection()
@@ -47,10 +51,11 @@ const updateSubtitle1 = i => {
     if (getDirection() == 'net') {
       let direc = getDirection() == 'net' ? 'net in-movers' : getDirection()
       let sign = (Math.round(countrySum/100)*100) > 0 ? "gain" : "loss";
-      string = `In 2019, ${stateA} had a net population ${sign} of ~${Math.abs(Math.round(countrySum/100)*100).toLocaleString("en-US")}.`
+      string = `In 2019, ${stateA} had a net movers ${sign} of ~${Math.abs(Math.round(countrySum/100)*100).toLocaleString("en-US")}.`
     }
+    document.getElementById("info-1").textContent = string
+    $('#info-1').css('color','black')
   }
-  document.getElementById("info-1").textContent = string
 }
 
 const getSingleStateData = (stateA, direction) => {
@@ -189,8 +194,8 @@ const drawAllStates = () => {
       updateLinks(i)
       updateTitle(i)
       updateSubtitle1(i)
+      updateSubtitle2(i)
       if(tiles.held.current){
-        updateSubtitle2(i)
         redrawSingleState(tiles.hover.current)
         removeAllLinks()
         lonks = drawLinks()

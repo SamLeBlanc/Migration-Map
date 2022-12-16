@@ -14,6 +14,7 @@ const drawWater = () => {
     tiles.hover.current = "Ocean"
     updateTitle(i)
     updateSubtitle1(i)
+    updateSubtitle2(i)
     // Since the hovered country has been change, we must redraw the map
     draw()
   })

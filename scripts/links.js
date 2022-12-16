@@ -89,6 +89,11 @@ function drawLinks(){
 // Updates the second subtitle under the map title
 // The second subtitle desrcribes the interchange between stateA and stateB
 const updateSubtitle2 = i => {
+  if(!tiles.held.current || tiles.hover.current == 'Ocean'){
+    $('#info-2').html(``)
+    return
+  }
+
   // Color text black to display subtitle
   $('#info-2').css('color','black')
 
@@ -97,6 +102,11 @@ const updateSubtitle2 = i => {
     // If a country is hovered over while another is held
     stateA = tiles.held.current;
     stateB = i.properties.NAME;
+    if (stateA == stateB) {
+      $('#info-2').css('color','grey')
+      $('#info-2').html(`Hover over another state to learn more...`)
+      return
+    }
     value = getInterStateSum(stateA, stateB, getDirection())
   } else {
     // If the link itself is hovered over

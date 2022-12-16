@@ -1,5 +1,8 @@
 
-function drawBee(state, direction) {
+function drawBee() {
+
+    // if (tiles.held.current != '' && tiles.hover.current == 'Ocean') return
+
     beeHeight = 300
     direction = getDirection()
 
@@ -11,7 +14,7 @@ function drawBee(state, direction) {
 
     let states = [... new Set(data['2020'].map(d => d.stateA))]
 
-    if (tiles.hover.current != "Ocean"){
+    if (tiles.hover.current != "Ocean" || (tiles.held.current != '' && tiles.hover.current == 'Ocean')){
       D = []
       states.forEach(e => {
         if (state != e) {
@@ -40,7 +43,7 @@ function drawBee(state, direction) {
 
     scaleSelect = $('#log').is(':checked') ? d3.scaleLog() : d3.scaleLinear();
     bounds = $('#log').is(':checked') ? [500,10000] : [0,2000];
-    if (tiles.hover.current == "Ocean") {
+    if (!tiles.held.current && tiles.hover.current == "Ocean") {
       bounds = [0,25000]
     }
 
@@ -107,12 +110,6 @@ function drawBee(state, direction) {
         .attr("fill", (d, i) => getBubbleFill(d))
         .attr("stroke", (d, i) => getBubbleStroke(d))
         .attr("stroke-width", (d, i) => getBubbleStrokeWidth(d))
-        .on("mouseover", function(d, i){
-          d3.select(this).attr("fill", "red")
-        })
-        .on("mouseout", function(d,i){
-          d3.select(this).attr("fill", d => getBubbleFill(d))
-        });
 
     cell.append("text")
         .text(d => abbrState(d.data.name, 'abbr'))
@@ -120,7 +117,7 @@ function drawBee(state, direction) {
         .attr("y", d => 20 + d.data.y + sizeScale(d.data.size)*0.33 )
         .attr("text-anchor", "middle")
         .attr("fill", d => {
-          return (tiles.hover.current != "Ocean" || getDirection() == 'net') ? "black" : "white";
+          return (tiles.hover.current != "Ocean" || getDirection() == 'net' || tiles.held.current) ? "black" : "white";
         })
         .attr("font-size", d => 1.1*sizeScale(d.data.size))
         .attr("pointer-events", "none")
@@ -137,9 +134,7 @@ function drawBee(state, direction) {
   }
 
   const getBubbleFill = d => {
-    if (tiles.held.current != "" && tiles.hover.current == d.data.name) return fillBubbleSingle(d)
-    if (tiles.held.current == d.data.name) return $('#color-3').val()
-    if (tiles.hover.current == d.data.name) return $('#color-3').val()
+    if (tiles.held.current == d.data.name || tiles.hover.current == d.data.name) return $('#color-3').val()
     if (tiles.hover.current == "Ocean" && !tiles.held.current) return fillNationalBubbleSum(d)
     else return fillBubbleSingle(d)
   }
