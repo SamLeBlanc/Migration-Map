@@ -24,102 +24,62 @@ const updateTitle = (i=null) => {
 }
 
 const updateSubtitle1 = i => {
-  $('#info-1').css('color','grey')
-  let string = "Hover over a state to learn more..."
-  document.getElementById("info-1").textContent = string
-
+  $('#info-1').text("Hover over a state to learn more...").css('color','grey')
   if (tiles.hover.current != "Ocean" || tiles.held.current != ''){
     let stateA = tiles.held.current ? tiles.held.current : i.properties.NAME;
     let countrySum = getSingleStateSum(stateA, getDirection())
     let direc = getDirection() == 'net' ? 'net in-movers' : getDirection()
-    string = `In 2019, ${stateA} had ~${(Math.round(countrySum/100)*100).toLocaleString("en-US")} ${direc}s.`
-
-
+    let string = `In 2019, ${stateA} had ~${(Math.round(countrySum/100)*100).toLocaleString("en-US")} ${direc}s.`
     if (getDirection() == 'net') {
       let direc = getDirection() == 'net' ? 'net in-movers' : getDirection()
       let sign = (Math.round(countrySum/100)*100) > 0 ? "gain" : "loss";
-      string = `In 2019, ${stateA} had a net movers ${sign} of ~${Math.abs(Math.round(countrySum/100)*100).toLocaleString("en-US")}.`
+      let string = `In 2019, ${stateA} had a net movers ${sign} of ~${Math.abs(Math.round(countrySum/100)*100).toLocaleString("en-US")}.`
     }
-    document.getElementById("info-1").textContent = string
-    $('#info-1').css('color','black')
+    $('#info-1').text(string).css('color','black')
   }
 }
 
-const getSingleStateData = (stateA, direction) => {
-  return data['2020'].filter( e => e.stateA == stateA && e.Direction == direction )
-}
+const getSingleStateData = (stateA, direction) => data['2020'].filter( e => e.stateA == stateA && e.Direction == direction )
 
 const getSingleStateSum = (stateA, direction) => {
-  if (direction != 'net') {
-    return d3.sum(getSingleStateData(stateA, direction).map(e => +e.Value))
-  } else {
-    return (
-      d3.sum(getSingleStateData(stateA, 'in-mover').map(e => +e.Value)) -
-      d3.sum(getSingleStateData(stateA, 'out-mover').map(e => +e.Value))
-    )
-  }
+  if (direction != 'net') return d3.sum(getSingleStateData(stateA, direction).map(e => +e.Value))
+  else return (d3.sum(getSingleStateData(stateA, 'in-mover').map(e => +e.Value)) - d3.sum(getSingleStateData(stateA, 'out-mover').map(e => +e.Value)))
 }
 
-const getInterStateData = (stateA, stateB, direction) => {
-  return data['2020'].filter( e => e.stateA == stateA && e.stateB == stateB && e.Direction == direction )
-}
+const getInterStateData = (stateA, stateB, direction) => data['2020'].filter( e => e.stateA == stateA && e.stateB == stateB && e.Direction == direction )
 
 const getInterStateSum = (stateA, stateB, direction) => {
-  if (direction != 'net') {
-    return d3.sum(getInterStateData(stateA, stateB, direction).map(e => +e.Value))
-  } else {
-    return (
-      d3.sum(getInterStateData(stateA, stateB, 'in-mover').map(e => +e.Value)) -
-      d3.sum(getInterStateData(stateA, stateB, 'out-mover').map(e => +e.Value))
-    )
-  }}
-
-const getColor = x => {
-  if (getDirection() != 'net') return colorImportExport(x)
-  else return colorNetExports(x)
+  if (direction != 'net') return d3.sum(getInterStateData(stateA, stateB, direction).map(e => +e.Value))
+  else return (d3.sum(getInterStateData(stateA, stateB, 'in-mover').map(e => +e.Value)) - d3.sum(getInterStateData(stateA, stateB, 'out-mover').map(e => +e.Value)))
 }
+
+const getColor = x => (getDirection() == 'net') ? colorNetExports(x) : colorImportExport(x)
 
 const colorImportExport = x => {
   if (Math.abs(x) < 0.1) return "#ddd"
 
-  n = 9
+  let breaks = [0,100,500,1000,5000,10000,50000,100000,500000];
+  let out_colors = [...Array(9).keys()].map(d => d3.interpolateRgb("lightgrey", $('#color-1').val() )((  Math.min(1,d/8)  ) ))
+  let in_colors = [...Array(9).keys()].map(d => d3.interpolateRgb("lightgrey", $('#color-2').val() )((  Math.min(1,d/8)  ) ))
+  let colors = getDirection() == 'in-mover' ? in_colors : out_colors;
 
-  const breaks = [0,100,500,1000,5000,10000,50000,100000,500000];
-
-  out_colors = [...Array(n).keys()].map(d => d3.interpolateRgb("lightgrey", $('#color-1').val() )((  Math.min(1,d/(n-1))  ) ))
-  in_colors = [...Array(n).keys()].map(d => d3.interpolateRgb("lightgrey", $('#color-2').val() )((  Math.min(1,d/(n-1))  ) ))
-
-  // out_colors = [...Array(n).keys()].map(d => d3[`interpolate${$('#out-color-select').val()}`] (d/(n-1)))
-  // in_colors = [...Array(n).keys()].map(d => d3[`interpolate${$('#in-color-select').val()}`] (d/(n-1)))
-
-  const colors = getDirection() == 'in-mover' ? in_colors : out_colors;
-
-  let count = 0;
-  breaks.forEach(n => { if(n<x) count++ });
-  const a = breaks[count-1],
-        b = breaks[count];
-  const colorA = colors[count-1],
-        colorB = colors[count];
-  const t = (x-a)/(b-a)
-
-  return d3.interpolateLab(colorA, colorB)(t)
+  let pos = breaks.filter(n => n<x).length
+  let [a, b] = [ breaks[pos-1], breaks[pos] ]
+  let [colorA, colorB] = [ colors[pos-1], colors[pos] ]
+  return d3.interpolateLab(colorA, colorB)((x-a)/(b-a))
 }
 
 const colorNetExports = x => {
   if (x == 0) return "#ddd"
-  n = 9
-  const out_colors = [...Array(n).keys()].reverse().map(d => d3.interpolateRgb("lightgrey", $('#color-1').val() )(d/(n-1)))
-  const in_colors = [...Array(n).keys()].map(d => d3.interpolateRgb("lightgrey", $('#color-2').val() )(d/(n-1)))
-  const breaks = [-1000000,-500000,-100000,-50000,-10000,-5000,-1000,-500,-100,0,100,500,1000,5000,10000,50000,100000,500000,1000000];
-  const colors = out_colors.concat(['#fff'], in_colors)
-  let count = 0;
-  breaks.forEach(n => { if(n<x) count++ });
-  const a = breaks[count-1],
-        b = breaks[count];
-  const colorA = colors[count-1],
-        colorB = colors[count];
-  const t = (x-a)/(b-a)
-  return d3.interpolateLab(colorA, colorB)(t)
+  let out_colors = [...Array(9).keys()].reverse().map(d => d3.interpolateRgb("lightgrey", $('#color-1').val() )(d/8))
+  let in_colors = [...Array(9).keys()].map(d => d3.interpolateRgb("lightgrey", $('#color-2').val() )(d/8))
+  let breaks = [-1000000,-500000,-100000,-50000,-10000,-5000,-1000,-500,-100,0,100,500,1000,5000,10000,50000,100000,500000,1000000];
+  let colors = out_colors.concat(['#fff'], in_colors)
+
+  let pos = breaks.filter(n => n<x).length
+  let [a, b] = [ breaks[pos-1], breaks[pos] ]
+  let [colorA, colorB] = [ colors[pos-1], colors[pos] ]
+  return d3.interpolateLab(colorA, colorB)((x-a)/(b-a))
 }
 
 const getStateFill = d => {
