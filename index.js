@@ -29,6 +29,6 @@ function draw(){
   updateTitle()
   drawAllStates()
   lonks = drawLinks()
-  drawBee()
+  drawBeeswarm()
   drawLegend()
 }

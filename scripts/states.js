@@ -1,38 +1,25 @@
-// Scale number ending based on the size in million, billion, trillion
-// Goes with scaleNum()
-const scaleMBT = val => {
-  // note: values are all in millions as default
-  if (Math.abs(val) > 1000000) return "trillion"
-  return (Math.abs(val) > 1000) ? "billion" : "million"
-}
-
-// Scale the number to fit with the million, billion, trillions ending
-// Goes with scaleMBT()
-const scaleNum = val => {
-  if (Math.abs(val) > 1000000) val = val/1000000
-  if (Math.abs(val) > 1000) val = val/1000
-  if (Math.abs(val) < 10) return val.toFixed(1)
-  return Math.round(val)
-}
-
 const updateTitle = (i=null) => {
   if (tiles.hover.current == "Ocean" && !tiles.held.current){
     let titleDirection = $('#direction-select').find(":selected").text()
-    $('.title').html(`<span id="title-state" style="color: ${$('#color-3').val()}">National</span> <span id="title-direction">${titleDirection.slice(0,-4)}&nbsp</span><div class="tooltip">
-      <img src="assets/i-icon.png" class="icon-i">
-      <span class="tooltiptext">Tooltip text</span>
-    </div>`)
+    $('.title').html(`
+        <span id="title-state" style="color: ${$('#color-3').val()}">National</span>
+        <span id="title-direction">${titleDirection.slice(0,-4)}&nbsp
+        </span><div class="tooltip">
+        <img src="assets/i-icon.png" class="icon-i">
+        <span class="tooltiptext">Tooltip text</span>
+      </div>`)
   } else {
-    name = i == null ? tiles.held.current :  i.properties.NAME
-    let stateA = tiles.held.current ? tiles.held.current : name;
-    let direction = getDirection()
-    if (direction == 'in-mover') titleDirection = 'In-movers to'
-    if (direction == 'out-mover') titleDirection = 'Out-movers from'
-    if (direction == 'net') titleDirection    = 'Net Movers to/from'
-    $('.title').html(`<span id="title-direction">${titleDirection}</span> <span id="title-state" style="color: ${$('#color-3').val()}">${stateA}&nbsp</span><div class="tooltip">
-      <img src="assets/i-icon.png" class="icon-i">
-      <span class="tooltiptext">Tooltip text</span>
-    </div>`)
+    let stateA = (tiles.held.current || i == null) ? tiles.held.current : i.properties.NAME
+    if (getDirection() == 'in-mover') titleDirection = 'In-movers to'
+    if (getDirection() == 'out-mover') titleDirection = 'Out-movers from'
+    if (getDirection() == 'net') titleDirection    = 'Net Movers to/from'
+    $('.title').html(`
+      <span id="title-direction">${titleDirection}</span>
+      <span id="title-state" style="color: ${$('#color-3').val()}">${stateA}&nbsp</span>
+      <div class="tooltip">
+        <img src="assets/i-icon.png" class="icon-i">
+        <span class="tooltiptext">Tooltip text</span>
+        </div>`)
   }
 }
 
@@ -199,8 +186,6 @@ const drawAllStates = () => {
         redrawSingleState(tiles.hover.current)
         removeAllLinks()
         lonks = drawLinks()
-      } else if (getNationLock()){
-        redrawSingleState(i.properties.NAME)
       } else {
         $('#info-2').empty();
         d3.select(this)

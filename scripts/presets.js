@@ -1,8 +1,4 @@
-const link_alert = () => {
-  alert("hey")
-}
-
-const preset = n => {
+const presetSettings = n => {
   if (n == 0){
     tiles = {
       'hover' : { 'previous' : '', 'current' : 'Ocean' },
