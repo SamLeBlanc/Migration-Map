@@ -6,8 +6,7 @@ const updateTitle = (i=null) => {
         <span id="title-direction">${titleDirection.slice(0,-4)}</span>
         <div class="tooltip">
           <img src="assets/i-icon.png" class="icon-i">
-          <span class="tooltiptext">Check the box (or press L) to enable links between states. Then, hover over a state to see the
-             which states have the largest number of movers in the chosen direction.</span>
+          <span class="tooltiptext"  style="width:300px">${mainTooltip()}</span>
         </div>`)
   } else {
     let stateA = (tiles.held.current || i == null) ? tiles.held.current : i.properties.NAME
@@ -19,10 +18,31 @@ const updateTitle = (i=null) => {
       <span id="title-state" style="color: ${$('#color-3').val()}">${stateA}</span>
       <div class="tooltip">
         <img src="assets/i-icon.png" class="icon-i">
-        <span class="tooltiptext">Check the box (or press L) to enable links between states. Then, hover over a state to see the
-           which states have the largest number of movers in the chosen direction.</span>
+        <span class="tooltiptext"  style="width:300px">${mainTooltip()}</span>
       </div>`)
   }
+}
+
+const mainTooltip = () => {
+  let text = ''
+  if (tiles.hover.current == 'Ocean' && getDirection() != 'net' && tiles.held.current == ''){
+    text = `The current data shows the total number of interstate ${getDirection()}s to each state during 2019.
+    An ${getDirection()} is defined as a person who moved ${getDirection()=='in-mover'?" in to":"out of"} that
+    state in the previous year. The darker color means more ${getDirection()}s`
+  } else if (tiles.hover.current == 'Ocean' && getDirection() == 'net' && tiles.held.current == ''){
+    text = `The current data shows the total number of net movers to each state during 2019.
+    Net movers are calculated as the number of interstate in-movers minus
+    the number of interstate out-movers. The darker color means higher absolute values of movers.`
+  } else if ((tiles.hover.current != 'Ocean' || tiles.held.current != '' ) && getDirection() != 'net'){
+      text = `The current data shows the number of interstate ${getDirection()}s who moved ${getDirection()=='in-mover'?" in to":"out of"}
+      ${$('#title-state').text()} during 2019. An ${getDirection()} is defined as a person who moved ${getDirection()=='in-mover'?" in to":"out of"} ${$('#title-state').text()}
+      in the previous year. The darker color means more ${getDirection()}s`
+  } else if ((tiles.hover.current != 'Ocean' || tiles.held.current != '' ) && getDirection() == 'net'){
+      text = `The current data shows the number of interstate net-movers
+      for ${$('#title-state').text()} during 2019. Net movers are calculated as the number of interstate in-movers to ${$('#title-state').text()} minus
+      the number of interstate out-movers from ${$('#title-state').text()}.`
+    }
+  return text
 }
 
 const updateSubtitle1 = i => {

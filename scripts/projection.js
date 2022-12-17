@@ -1,5 +1,6 @@
 // https://observablehq.com/@armollica/u-s-map-with-puerto-rico
 
+// geoAlbers projections with USA, Alaska, Hawaii, and PR
 function geoAlbersUsaPr() {
   var cache,
       cacheStream,

@@ -1,3 +1,5 @@
+// Create the settings for the pre-sets
+
 const presetSettings = n => {
   if (n == 0){
     tiles = {

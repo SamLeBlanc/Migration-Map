@@ -75,10 +75,10 @@
     <span>Pre-sets:</span>
     <span class="tooltip">
       <img src="assets/i-icon.png" class="icon-i">
-      <span class="tooltiptext">The buttons below will load several pre-made maps, give it a try!</span>
+      <span class="tooltiptext">The buttons below will load several pre-made settings, give it a try!</span>
     </span>
     <div style="padding:3px"></div>
-    <button type="button" onclick="presetSettings(0)">Reset Map</button>
+    <button type="button" onclick="presetSettings(0)">Reset</button>
 
 
     <br><br>
@@ -86,7 +86,7 @@
     <button type="button" onclick="presetSettings(1)">California Net Movers</button>
     <div class="tooltip">
       <img src="assets/i-icon.png" class="icon-i">
-      <span class="tooltiptext">~ Red Out West ~<br>This map shows that California is losing net movers to basically
+      <span class="tooltiptext">~ Red Out West ~<br>This data shows that California is losing net movers to basically
         all states on the west coast (except for Alaska and Hawaii). By comparison, for most of the states in
         New England, more people are moving to California than vice versa. </span>
     </div>
@@ -96,7 +96,7 @@
     <button type="button" onclick="presetSettings(4)">Delaware Net Movers</button>
     <div class="tooltip">
       <img src="assets/i-icon.png" class="icon-i">
-      <span class="tooltiptext">~ Dela-why ~<br>This map shows that most states have a neutral relationship with Delware,
+      <span class="tooltiptext">~ Dela-why ~<br>This data shows that most states have a neutral relationship with Delware,
         with net movers being close to zero. For the most part, the only states with significant net-movers to Delaware
         are the states close by. This is especially suprising since the people from these states should know best how awful Delaware is...</span>
     </div>
@@ -118,7 +118,7 @@
     <div class="tooltip">
       <img src="assets/i-icon.png" class="icon-i">
       <span class="tooltiptext">~ Shrinking Puerto Rico ~<br> Between 2010 and 2020, Puerto Rico's total population shrank
-        by nearly 12%, compared to the highest state, West Virginia, which shrank by just 3% during this period. This map demonstrates this phenomenon distinctly,
+        by nearly 12%, compared to the highest state, West Virginia, which shrank by just 3% during this period. This data demonstrates this phenomenon distinctly,
         with every state getting more people from Puerto Rico than vice versa.
       </span>
     </div>
@@ -181,15 +181,17 @@ const height = 550
 const bubble_height = Math.max(350, window.innerHeight*0.33)+25
 const map_height = window.innerHeight - 124 - bubble_height
 
+// Set title position
 $(".title").css("margin-top", window.innerHeight - 60 - bubble_height)
 
-// Define the SVG inside of the wrapper
+// Define the MAP SVG inside of the wrapper
 const svg = d3.select("#wrapper")
 .append("svg")
 .attr("width", width)
 .attr("height", map_height)
 .call(zoom);
 
+// Define the BEESWARM SVG inside of the wrapper
 const svg2 = d3.select("#wrapper")
 .append("svg")
 .attr("id","svg2")

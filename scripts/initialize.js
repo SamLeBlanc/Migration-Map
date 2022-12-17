@@ -1,8 +1,10 @@
-// Functions to setup the hotkeys and center some headings/wrappers
+// Functions to call on startup
+// Setup the hotkeys and center some things
 
 // Functions to center divs
 const centerHeading = () => $('.heading').css('left', 0.5 * (window.innerWidth - parseInt($('.heading').css('width'))));
 
+// Center the wrapper horizontally
 const horizontalCenterWrappers = () => {
   ["#wrapper","#wrapper-2"].forEach(div => {
     $(div).css({'left': 0.5 * (window.innerWidth - parseInt($(div).css('width')))})
@@ -13,6 +15,7 @@ const horizontalCenterWrappers = () => {
 const getDirection = () => $('#direction-select').val()
 const getLinks = () => $('#links-checkbox').is(':checked')
 
+// I love hotkeys
 const initializeHotkeys = e => {
   // Creates the hotkey infrastructure that allows for fast changing of settings
   // After any of the hotkeys are pressed, the map is redrawn
@@ -24,6 +27,7 @@ const initializeHotkeys = e => {
   draw()
 }
 
+// Run on start-up
 const initialize = () => {
   horizontalCenterWrappers()
   centerHeading()
@@ -31,7 +35,8 @@ const initialize = () => {
     .on("keydown", e => initializeHotkeys(e));
 }
 
-function stateAbbrPopulation(input, to){
+// Dictionary/converter for state abbrevation, name, and population
+const stateAbbrPopulation = (input, to) => {
     var states = [["Alabama","AL",4849509], ["Alaska","AK",722063], ["Arizona","AZ",7200620], ["Arkansas","AR",2989054], ["California","CA",39084048], ["Colorado","CO",5701658], ["Connecticut","CT",3531986], ["Delaware","DE",964817], ["District of Columbia","DC",697556], ["Florida","FL",21269409], ["Georgia","GA",10499808], ["Hawaii","HI",1396819], ["Idaho","ID",1764327], ["Illinois","IL",12536539], ["Indiana","IN",6656971], ["Iowa","IA",3121385], ["Kansas","KS",2879518], ["Kentucky","KY",4421512], ["Louisiana","LA",4595111], ["Maine","ME",1331656], ["Maryland","MD",5979602], ["Massachusetts","MA",6828110], ["Michigan","MI",9880758], ["Minnesota","MN",5575235], ["Mississippi","MS",2943737], ["Missouri","MO",6069697], ["Montana","MT",1056994], ["Nebraska","NE",1910711], ["Nevada","NV",3048602], ["New Hampshire","NH",1350155], ["New Jersey","NJ",8791672], ["New Mexico","NM",2073628], ["New York","NY",19240920], ["North Carolina","NC",10371906], ["North Dakota","ND",750501], ["Ohio","OH",11556037], ["Oklahoma","OK",3907258], ["Oregon","OR",4178578], ["Pennsylvania","PA",12670245], ["Puerto Rico","PR",3175835], ["Rhode Island","RI",1050602], ["South Carolina","SC",5092727], ["South Dakota","SD",872708], ["Tennessee","TN",6754461], ["Texas","TX",28642658], ["Utah","UT",3162102], ["Vermont","VT",617560], ["Virginia","VA",8439982], ["Washington","WA",7527366], ["West Virginia","WV",1773280], ["Wisconsin","WI",5760481], ["Wyoming","WY",572884]];
 
     if (to == 'abbr'){

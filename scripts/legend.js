@@ -1,6 +1,7 @@
 // Draw the map legend
 const drawLegend = () => {
 
+  // Numbers to display in legend
   let keys = (getDirection() != 'net') ? [0,5e2,1e3,5e3,1e4,5e4,1e5,5e5] : [-5e5,-1e5,-5e4,-1e4,-5e3,-1e3,-5e2,0,5e2,1e3,5e3,1e4,5e4,1e5,5e5];
 
   // Remove the legend if it exists
@@ -19,6 +20,7 @@ const drawLegend = () => {
   .attr("width", $('#wrapper').css('width'))
   .attr("height", $('#wrapper').css('height'))
 
+  // Legend title
   legend.append("g")
   .append("text")
 	.text(legendTitle)
@@ -26,6 +28,7 @@ const drawLegend = () => {
 	.attr("y", 130)
   .style("font-size","26px")
 
+  // Legend circles
   legend.append("g")
     .selectAll("legend-dots")
     .data(keys.reverse())
@@ -38,7 +41,7 @@ const drawLegend = () => {
   		.attr("stroke-width","3")
       .style("fill", function(d){ return getColor(d)})
 
-  // Add the legend labels
+  // Legend labels
   legend.append("g")
     .selectAll("legend-labels")
     .data(keys)

@@ -1,32 +1,46 @@
+// Functions pertainfing to the beeswarm chart
+
+// SVG construction of beeswarm
 const drawBeeswarm = () => {
 
+    // Smaller then bubble height
     let beeswarmHeight = 300
 
+    // Remove any previous beesawrm elements that may remain
     deleteBeeswarmChart()
 
+    // Format data for circle construction
     beeswarmData = getBeeswarmData()
 
+    // Scale
     var axisScale = d3.scaleLinear()
         .rangeRound([50, width-50])
         .domain(getAxisDomain(beeswarmData));
 
+    // Circle size is proportional to area
+    // Size encodes state total population
     var sizeScale = d3.scaleSqrt()
         .range([7, 30])
         .domain(d3.extent(beeswarmData, d => d.size));
 
+    // Create voronoi force simulation
+    // This simulates a collision where the circle positions are determined
     var simulation = d3.forceSimulation(beeswarmData)
         .force("x", d3.forceX(d => axisScale(d.change)).strength(1))
         .force("y", d3.forceY(beeswarmHeight / 2))
         .force("collide", d3.forceCollide((d, i) => sizeScale(d.size) + 2))
         .stop();
 
+    // Run simulation
     for (var i = 0; i < 250; ++i) simulation.tick();
 
+    // x-axis
     svg2.append("g")
         .attr("class", "axis")
         .attr("transform", "translate(0," + (beeswarmHeight) + ")")
         .call(d3.axisBottom(axisScale).ticks(12));
 
+    // x-axis label
     svg2.append("text")
       .attr("class", "axis-label")
       .attr("text-anchor", "middle")
@@ -34,7 +48,7 @@ const drawBeeswarm = () => {
       .attr("y", beeswarmHeight + 50)
       .text(getAxisTitleName());
 
-    // JOIN
+    // Create polygon cells for voronoi
     var cell = svg2.append("g")
         .attr("class", "cells")
         .selectAll("g").data(d3.voronoi()
@@ -43,11 +57,11 @@ const drawBeeswarm = () => {
         .y(d => d.y)
         .polygons(beeswarmData)).enter().append("g")
 
-    // voronoi
+    // Voronoi paths
     var voronoi = cell.append("path")
         .attr("d", d => ("M" + d.join("L") + "Z"));
 
-    // circle
+    // Circle
     cell.append("circle")
         .attr("r", d => sizeScale(d.data.size))
         .attr("cx", d => d.data.x)
@@ -56,6 +70,7 @@ const drawBeeswarm = () => {
         .attr("stroke", (d, i) => getBubbleStroke(d))
         .attr("stroke-width", (d, i) => getBubbleStrokeWidth(d))
 
+    // Circle text
     cell.append("text")
         .text(d => stateAbbrPopulation(d.data.name, 'abbr'))
         .attr("x", d => d.data.x + sizeScale(d.data.size)*0.05)
@@ -105,9 +120,9 @@ const getAxisDomain = beeswarmData => {
 }
 
 const getAxisTitleName = () => {
-  if(getDirection() == 'in-mover') return 'In-movers Count'
-  if(getDirection() == 'out-mover') return 'Out-movers Count'
-  if(getDirection() == 'net') return 'Net-movers Count'
+  if(getDirection() == 'in-mover') return 'In-movers'
+  if(getDirection() == 'out-mover') return 'Out-movers'
+  if(getDirection() == 'net') return 'Net-movers'
   return "?????"
 }
 
