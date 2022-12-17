@@ -1,3 +1,10 @@
+body{
+  background: #eee;
+  font-family: 'Yantramanav', sans-serif;
+  color: black;
+  font-weight: bold;
+}
+
 #settings{
   font-size:24px;
   line-height: 90%;
@@ -102,19 +109,13 @@
   pointer-events: none;
 }
 
-body{
-  background: #ddd;
-  font-family: 'Yantramanav', sans-serif;
-  color: black;
-  font-weight: bold;
-}
 
 .link{
   stroke-linecap: round;
   fill: transparent;
   pointer-events: visibleStroke;
   opacity: 0.5;
-  /* pointer-events: none; */
+  pointer-events: none;
 }
 
 .country{
@@ -138,21 +139,24 @@ body{
   position: relative;
   display: inline-block;
   border-bottom: 1px dotted black;
-  all: initial;
+  font-size: 14px;
+  font-weight: normal;
+  pointer-events: all;
 }
 
 .tooltip .tooltiptext {
   visibility: hidden;
-  width: 120px;
+  width: 250px;
   background-color: black;
   color: #fff;
   text-align: center;
   border-radius: 6px;
-  padding: 5px 0;
+  padding: 5px;
 
   /* Position the tooltip */
   position: absolute;
   z-index: 1;
+  left: 20px
 }
 
 .tooltip:hover .tooltiptext {

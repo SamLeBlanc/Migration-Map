@@ -6,12 +6,25 @@ const drawLegend = () => {
   // Remove the legend if it exists
   d3.select("#legendy").remove()
 
+  let legendTitle = () => {
+    if (getDirection() == 'net') return "Net-movers"
+    if (getDirection() == 'in-mover') return "In-movers"
+    if (getDirection() == 'out-mover') return "Out-movers"
+  }
+
   // Create a new group for the legend elements
   const legend = d3.select("#wrapper")
   .append("svg")
   .attr("id","legendy")
   .attr("width", $('#wrapper').css('width'))
   .attr("height", $('#wrapper').css('height'))
+
+  legend.append("g")
+  .append("text")
+	.text(legendTitle)
+	.attr("x", window.innerWidth - 210)
+	.attr("y", 130)
+  .style("font-size","26px")
 
   legend.append("g")
     .selectAll("legend-dots")
@@ -33,7 +46,7 @@ const drawLegend = () => {
     .append("text")
       .attr("class","legend-label")
       .attr("x", window.innerWidth - 175)
-      .attr("y", (d,i) => 170 + i*24) // 100 is where the first dot appears. 25 is the distance between dots
+      .attr("y", (d,i) => 164 + i*24.3) // 100 is where the first dot appears. 25 is the distance between dots
       .attr("text-anchor", "left")
       .style("fill", d => getColor(d))
       .text(d => {

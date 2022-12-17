@@ -86,49 +86,49 @@ const getBeeswarmData = () => {
   return beeswarmData
 }
 
-  const deleteBeeswarmChart = () => {
-    svg2.select(".cells").remove()
-    svg2.select(".axis").remove()
-    svg2.select(".axis-label").remove()
+const deleteBeeswarmChart = () => {
+  svg2.select(".cells").remove()
+  svg2.select(".axis").remove()
+  svg2.select(".axis-label").remove()
+}
+
+const getAxisDomain = beeswarmData => {
+  let bounds = (!tiles.held.current && tiles.hover.current == "Ocean") ? [0,25000] : [0,2000];
+  if (getDirection() != 'net'){
+    domain = [bounds[0] - (d3.max(beeswarmData, d => d.change))*0.05,
+              bounds[1] + d3.max(beeswarmData, d => d.change)]
+  } else {
+    domain = [1.05*(d3.min(beeswarmData, d => d.change)),
+              1.05*(d3.max(beeswarmData, d => d.change))]
   }
+  return domain
+}
 
-  const getAxisDomain = beeswarmData => {
-    let bounds = (!tiles.held.current && tiles.hover.current == "Ocean") ? [0,25000] : [0,2000];
-    if (getDirection() != 'net'){
-      domain = [bounds[0] - (d3.max(beeswarmData, d => d.change))*0.05,
-                bounds[1] + d3.max(beeswarmData, d => d.change)]
-    } else {
-      domain = [1.05*(d3.min(beeswarmData, d => d.change)),
-                1.05*(d3.max(beeswarmData, d => d.change))]
-    }
-    return domain
-  }
+const getAxisTitleName = () => {
+  if(getDirection() == 'in-mover') return 'In-movers Count'
+  if(getDirection() == 'out-mover') return 'Out-movers Count'
+  if(getDirection() == 'net') return 'Net-movers Count'
+  return "?????"
+}
 
-  const getAxisTitleName = () => {
-    if(getDirection() == 'in-mover') return 'In-movers Count'
-    if(getDirection() == 'out-mover') return 'Out-movers Count'
-    if(getDirection() == 'net') return 'Net-movers Count'
-    return "?????"
-  }
+const getBubbleTextColor = d => (tiles.hover.current != "Ocean" || getDirection() == 'net' || tiles.held.current) ? "black" : "white"
 
-  const getBubbleTextColor = d => (tiles.hover.current != "Ocean" || getDirection() == 'net' || tiles.held.current) ? "black" : "white"
+const getBubbleStroke = d => (tiles.held.current != "" && tiles.hover.current == d.data.name) ? $('#color-3').val() : "black"
 
-  const getBubbleStroke = d => (tiles.held.current != "" && tiles.hover.current == d.data.name) ? $('#color-3').val() : "black"
+const getBubbleStrokeWidth = d => (tiles.held.current != "" && tiles.hover.current == d.data.name) ? 5 : 2
 
-  const getBubbleStrokeWidth = d => (tiles.held.current != "" && tiles.hover.current == d.data.name) ? 5 : 2
+const fillNationalBubbleSum = d => getColor(getSingleStateSum(d.data.name, getDirection()))
 
-  const fillNationalBubbleSum = d => getColor(getSingleStateSum(d.data.name, getDirection()))
+const getBubbleFill = d => {
+  if (tiles.held.current != "" && tiles.hover.current == d.data.name) return fillBubbleSingle(d)
+  else if (tiles.held.current == d.data.name || tiles.hover.current == d.data.name) return $('#color-3').val()
+  else if (tiles.hover.current == "Ocean" && !tiles.held.current) return fillNationalBubbleSum(d)
+  else return fillBubbleSingle(d)
+}
 
-  const getBubbleFill = d => {
-    if (tiles.held.current != "" && tiles.hover.current == d.data.name) return fillBubbleSingle(d)
-    else if (tiles.held.current == d.data.name || tiles.hover.current == d.data.name) return $('#color-3').val()
-    else if (tiles.hover.current == "Ocean" && !tiles.held.current) return fillNationalBubbleSum(d)
-    else return fillBubbleSingle(d)
-  }
-
-  const fillBubbleSingle = d => {
-    let stateA = tiles.held.current ? tiles.held.current : tiles.hover.current
-    let stateB = d.data.name
-    let interStateSum = getInterStateSum(stateA, stateB, getDirection())
-    return getColor(interStateSum)
-  }
+const fillBubbleSingle = d => {
+  let stateA = tiles.held.current ? tiles.held.current : tiles.hover.current
+  let stateB = d.data.name
+  let interStateSum = getInterStateSum(stateA, stateB, getDirection())
+  return getColor(interStateSum)
+}

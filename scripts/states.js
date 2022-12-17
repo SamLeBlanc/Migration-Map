@@ -3,11 +3,12 @@ const updateTitle = (i=null) => {
     let titleDirection = $('#direction-select').find(":selected").text()
     $('.title').html(`
         <span id="title-state" style="color: ${$('#color-3').val()}">National</span>
-        <span id="title-direction">${titleDirection.slice(0,-4)}&nbsp
-        </span><div class="tooltip">
-        <img src="assets/i-icon.png" class="icon-i">
-        <span class="tooltiptext">Tooltip text</span>
-      </div>`)
+        <span id="title-direction">${titleDirection.slice(0,-4)}</span>
+        <div class="tooltip">
+          <img src="assets/i-icon.png" class="icon-i">
+          <span class="tooltiptext">Check the box (or press L) to enable links between states. Then, hover over a state to see the
+             which states have the largest number of movers in the chosen direction.</span>
+        </div>`)
   } else {
     let stateA = (tiles.held.current || i == null) ? tiles.held.current : i.properties.NAME
     if (getDirection() == 'in-mover') titleDirection = 'In-movers to'
@@ -15,11 +16,12 @@ const updateTitle = (i=null) => {
     if (getDirection() == 'net') titleDirection    = 'Net Movers to/from'
     $('.title').html(`
       <span id="title-direction">${titleDirection}</span>
-      <span id="title-state" style="color: ${$('#color-3').val()}">${stateA}&nbsp</span>
+      <span id="title-state" style="color: ${$('#color-3').val()}">${stateA}</span>
       <div class="tooltip">
         <img src="assets/i-icon.png" class="icon-i">
-        <span class="tooltiptext">Tooltip text</span>
-        </div>`)
+        <span class="tooltiptext">Check the box (or press L) to enable links between states. Then, hover over a state to see the
+           which states have the largest number of movers in the chosen direction.</span>
+      </div>`)
   }
 }
 

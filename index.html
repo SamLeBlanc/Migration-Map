@@ -2,12 +2,10 @@
 <meta charset="utf-8">
 
 <head>
-<!-- Assets -->
-<!-- <script src="https://d3js.org/d3.v4.js"></script> -->
 
+<!-- Assets -->
 <script src="assets/d3.v4.min.js"></script>
 <script src="assets/d3.v6.min.js"></script>
-<script src="assets/d3-legend.min.js"></script>
 <script src="assets/jquery-1.12.4.js"></script>
 <script src="assets/jquery-ui.js"></script>
 <link rel="stylesheet" href="assets/jquery-ui.css">
@@ -29,9 +27,6 @@
 
 <!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@900&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Rubik:wght@900&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Yantramanav:wght@900&display=swap" rel="stylesheet">
 
 </head>
@@ -48,6 +43,13 @@
       <option value="out-mover">Out-movers (O)</option>
       <option value="net">Net Movers (N)</option>
     </select>
+    <div class="tooltip">
+      <img src="assets/i-icon.png" class="icon-i">
+      <span class="tooltiptext">Select a Direction to display the numbers of people moving in to (in-movers) or out of (out-movers)
+        each state in the union. Or, examine the difference between the two (net-movers). You can also switch between the directions
+        by pressed keys:<br> I (in), O (out), or N (net).
+      </span>
+    </div>
   </div>
   <div style="padding:1px 3px;">
     <label for="Links" style="font-size:16px;">Links (L):</label>
@@ -55,7 +57,8 @@
     <input id="links-number" type="number" value="5" style="width:40px">
     <div class="tooltip">
       <img src="assets/i-icon.png" class="icon-i">
-      <span class="tooltiptext">Tooltip text</span>
+      <span class="tooltiptext">Check the box (or press L) to enable links between states. Then, hover over a state to see the
+         which states have the largest number of movers in the chosen direction.</span>
     </div>
   </div>
   <br>
@@ -70,10 +73,10 @@
   <br>
   <div style="padding:1px 3px;">
     <span>Pre-sets:</span>
-    <div class="tooltip">
+    <span class="tooltip">
       <img src="assets/i-icon.png" class="icon-i">
-      <span class="tooltiptext">Tooltip text</span>
-    </div>
+      <span class="tooltiptext">The buttons below will load several pre-made maps, give it a try!</span>
+    </span>
     <div style="padding:3px"></div>
     <button type="button" onclick="presetSettings(0)">Reset Map</button>
 
@@ -83,7 +86,9 @@
     <button type="button" onclick="presetSettings(1)">California Net Movers</button>
     <div class="tooltip">
       <img src="assets/i-icon.png" class="icon-i">
-      <span class="tooltiptext">Tooltip text</span>
+      <span class="tooltiptext">~ Red Out West ~<br>This map shows that California is losing net movers to basically
+        all states on the west coast (except for Alaska and Hawaii). By comparison, for most of the states in
+        New England, more people are moving to California than vice versa. </span>
     </div>
 
     <br>
@@ -91,7 +96,9 @@
     <button type="button" onclick="presetSettings(4)">Delaware Net Movers</button>
     <div class="tooltip">
       <img src="assets/i-icon.png" class="icon-i">
-      <span class="tooltiptext">Tooltip text</span>
+      <span class="tooltiptext">~ Dela-why ~<br>This map shows that most states have a neutral relationship with Delware,
+        with net movers being close to zero. For the most part, the only states with significant net-movers to Delaware
+        are the states close by. This is especially suprising since the people from these states should know best how awful Delaware is...</span>
     </div>
 
     <br>
@@ -99,14 +106,21 @@
     <button type="button" onclick="presetSettings(5)">New York Net Movers</button>
     <div class="tooltip">
       <img src="assets/i-icon.png" class="icon-i">
-      <span class="tooltiptext">Tooltip text</span>
+      <span class="tooltiptext">~ Not Just COVID ~<br> Even before COVID-19 (the data is from 2019), New York had
+        negative net movers with almost every single other state. Unsurprsingly, the states with the most negative
+        relationship of net movers are Florida and New Jersey. The only state with more people moving to New York than
+        vice versa was Puerto Rico, which is not unexpected given the large Puerto Rican population in NYC.
+      </span>
     </div>
 
     <br>
     <button type="button" onclick="presetSettings(6)">Puerto Rico Net Movers</button>
     <div class="tooltip">
       <img src="assets/i-icon.png" class="icon-i">
-      <span class="tooltiptext">Tooltip text</span>
+      <span class="tooltiptext">~ Shrinking Puerto Rico ~<br> Between 2010 and 2020, Puerto Rico's total population shrank
+        by nearly 12%, compared to the highest state, West Virginia, which shrank by just 3% during this period. This map demonstrates this phenomenon distinctly,
+        with every state getting more people from Puerto Rico than vice versa.
+      </span>
     </div>
 
     <br><br>
@@ -114,7 +128,10 @@
     <button type="button" onclick="presetSettings(2)">North Dakota In-movers</button>
     <div class="tooltip">
       <img src="assets/i-icon.png" class="icon-i">
-      <span class="tooltiptext">Tooltip text</span>
+      <span class="tooltiptext">~ North vs. South ~<br>Some states have a strong migration partnership with just one other. For North
+        Dakota, it would be reasonable to expect this state to be South Dakota but that is not the case. The state that provides the most
+        in-movers to North Dakota is Minnesota, and it is not even close.
+      </span>
     </div>
 
     <br>
@@ -122,7 +139,10 @@
     <button type="button" onclick="presetSettings(3)">North Dakota Out-movers</button>
     <div class="tooltip">
       <img src="assets/i-icon.png" class="icon-i">
-      <span class="tooltiptext">Tooltip text</span>
+      <span class="tooltiptext">~ North vs. South ~<br> Similarly, the state that receives the most number of migrants from North
+        Dakota is also Minnesota, and again, it is not even close. This visualization excels at teasing out these complex and often
+        unexpected relationships between states.
+      </span>
     </div>
 
     <br>
@@ -179,8 +199,6 @@ const svg2 = d3.select("#wrapper")
 
 $(".title").css("margin-top", window.innerHeight - 75 - bubble_height)
 $("#svg2").css("margin-top", $(".title").css("height"))
-
-
 
 // Create two high-level groups, for the water and land components, respectively
 const ocean = svg.append("g");
